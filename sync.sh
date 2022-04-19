@@ -39,6 +39,7 @@ trap 'cp /jd-scripts-docker/sync.sh /sync' Exit
     mv /loon_tmp /loon
   }
 }
+rm -rf /scripts/jd_crazy*.js
 cd /scripts || exit 1
 cp -r /loon/* /scripts
 npm install || npm install --registry=https://registry.npm.taobao.org || exit 1
