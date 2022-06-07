@@ -13,6 +13,7 @@ trap 'cp /jd-scripts-docker/sync.sh /sync' Exit
     mv /jd-scripts-docker_tmp /jd-scripts-docker
   }
 }
+
 (
   exec 2<>/dev/null
   set -e
@@ -39,9 +40,24 @@ trap 'cp /jd-scripts-docker/sync.sh /sync' Exit
     mv /loon_tmp /loon
   }
 }
+(
+  exec 2<>/dev/null
+  set -e
+  cd /JDHelp
+  git checkout .
+  git pull
+) || {
+  git clone --branch=main https://github.com/houyong-feng/JDHelp.git /JDHelp_tmp
+  [ -d /JDHelp ] && {
+    rm -rf /JDHelp
+    mv /JDHelp_tmp /JDHelp
+  }
+}
+
 rm -rf /scripts/jd_crazy*.js
 cd /scripts || exit 1
 cp -r /loon/* /scripts
+cp -r /JDHelp/*.js /scripts
 npm install || npm install --registry=https://registry.npm.taobao.org || exit 1
 [ -f /crontab.list ] && {
   cp /crontab.list /crontab.list.old
